@@ -1,0 +1,29 @@
+- name: Download WSO2 EI
+  get_url:
+    url: "https://github.com/wso2/product-ei/releases/download/v{{ ei_version }}/wso2ei-{{ ei_version }}.zip"
+    dest: "{{ home_dir }}downloads/wso2ei-{{ei_version}}.zip"
+    checksum: md5:9f03d5f75a753b08868d341cbfba1272
+
+- name: Download WSO2 AM
+  get_url:
+    url: "https://github.com/wso2/product-apim/releases/download/v{{ am_version }}/wso2am-{{ am_version }}.zip"
+    dest: "{{ home_dir }}downloads/wso2am-{{am_version}}.zip"
+    checksum: md5:d165312a64932078666c3d6eae0f855f
+
+- name: Download WSO2 IS
+  get_url:
+    url: "https://github.com/wso2/product-is/releases/download/v{{ is_version }}/wso2is-{{ is_version }}.zip"
+    dest: "{{ home_dir }}downloads/wso2is-{{ is_version }}.zip"
+    checksum: md5:1e6e1f881e9740399231e3e3765d4535
+
+- name: Download mysql-connector-java-8.0.12.tar.gz
+  get_url:
+      url: "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.12.tar.gz"
+      dest: "{{ home_dir }}downloads/mysql-connector-java-8.0.12.tar.gz"
+      checksum: md5:368c686aec816ca7d2ad9c98ac0e739f
+
+- name: Extract mysql-connector 
+  unarchive:
+    src: "{{ home_dir }}downloads/mysql-connector-java-8.0.12.tar.gz"
+    creates: "{{ home_dir }}downloads/mysql-connector"
+    dest: "{{ home_dir }}downloads"

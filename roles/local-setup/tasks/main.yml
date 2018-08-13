@@ -1,0 +1,14 @@
+---
+
+- include: prepare-source.yml
+- include: setup-wso2-is.yml
+- include: setup-wso2-ei.yml
+- include: setup-wso2-am.yml
+#- include: setup-jdk-8u144.yml
+#- name: Remove previous build
+#  file:
+#    state: absent
+#    path: "{{ source_path }}{{ build_dir }}/"
+
+#- include: build-client.yml
+#- include: build-ssr.yml

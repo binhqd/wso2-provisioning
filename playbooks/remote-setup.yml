@@ -1,0 +1,15 @@
+---
+
+- name: A Playbook that deploy frontend
+  hosts: webservers
+  remote_user: zakcol
+  become: true
+  gather_facts: no
+  vars:
+    ansible_os_family: Debian
+    ansible_processor_vcpus: 1
+  tasks:
+  roles:
+    - nginx
+
+  handlers:

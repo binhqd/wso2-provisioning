@@ -1,0 +1,9 @@
+[webservers]
+lgsp-quangnam.gov.vn ansible_user=lgsp ansible_connection=ssh
+
+[local]
+localhost
+
+[production:children]
+webservers
+local

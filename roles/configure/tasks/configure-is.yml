@@ -1,0 +1,151 @@
+- name: Add mysql connector 8.0.12
+  copy:
+    src: "{{ home_dir }}downloads/mysql-connector-java-8.0.12/mysql-connector-java-8.0.12.jar"
+    dest: "{{ is_home }}/repository/components/lib/mysql-connector-java-8.0.12.jar"
+    mode: 0644
+
+- name: Add user store datasource
+  blockinfile:
+    path: "{{ is_home }}repository/conf/datasources/master-datasources.xml"
+    marker: "<!-- {mark} User store datasource -->"
+    insertafter: "<datasources>"
+    block: |
+      <datasource>
+        <name>{{ userstore_dsname }}</name>
+        <description>The datasource used for registry and user manager</description>
+        <jndiConfig>
+                  <name>{{ userstore_jndi }}</name>
+        </jndiConfig>
+        <definition type="RDBMS">
+                  <configuration>
+                      <url>{{ userstore_connection_string }}</url>
+                      <username>{{ userstore_user }}</username>
+                      <password>{{ userstore_pass }}</password>
+                      <driverClassName>{{ userstore_driver_class }}</driverClassName>
+                      <maxActive>50</maxActive>
+                      <maxWait>60000</maxWait>
+                      <testOnBorrow>true</testOnBorrow>
+                      <validationQuery>SELECT 1</validationQuery>
+                      <validationInterval>30000</validationInterval>
+                  </configuration>
+          </definition>
+      </datasource>
+
+- name: Add identity datasource
+  blockinfile:
+    path: "{{ is_home }}repository/conf/datasources/master-datasources.xml"
+    marker: "<!-- {mark} Identity datasource -->"
+    insertafter: "<datasources>"
+    block: |
+      <datasource>
+            <name>{{ identity_dsname }}</name>
+            <description>The datasource used for identity</description>
+            <jndiConfig>
+                <name>{{ identity_jndi }}</name>
+            </jndiConfig>
+            <definition type="RDBMS">
+                <configuration>
+                    <url>{{ identity_connection_string }}</url>
+                    <username>{{ identity_user }}</username>
+                    <password>{{ identity_pass }}</password>
+                    <driverClassName>{{ identity_driver_class }}</driverClassName>
+                    <maxActive>50</maxActive>
+                    <maxWait>60000</maxWait>
+                    <testOnBorrow>true</testOnBorrow>
+                    <validationQuery>SELECT 1</validationQuery>
+                    <validationInterval>30000</validationInterval>
+                </configuration>
+            </definition>
+        </datasource>
+
+- name: Add registry datasource
+  blockinfile:
+    path: "{{ is_home }}repository/conf/datasources/master-datasources.xml"
+    marker: "<!-- {mark} Registry datasource -->"
+    insertafter: "<datasources>"
+    block: |
+      <datasource>
+            <name>{{ registry_dsname }}</name>
+            <description>The datasource used for registry</description>
+            <jndiConfig>
+                <name>{{ registry_jndi }}</name>
+            </jndiConfig>
+            <definition type="RDBMS">
+                <configuration>
+                    <url>{{ registry_connection_string }}</url>
+                    <username>{{ registry_user }}</username>
+                    <password>{{ registry_pass }}</password>
+                    <driverClassName>{{ registry_driver_class }}</driverClassName>
+                    <maxActive>50</maxActive>
+                    <maxWait>60000</maxWait>
+                    <testOnBorrow>true</testOnBorrow>
+                    <validationQuery>SELECT 1</validationQuery>
+                    <validationInterval>30000</validationInterval>
+                </configuration>
+            </definition>
+        </datasource>
+
+- name: Config registry datasource
+  blockinfile:
+    path: "{{ is_home }}repository/conf/registry.xml"
+    marker: "<!-- {mark} Registry DB config -->"
+    insertbefore: "<dbConfig name=\"wso2registry\">"
+    block: |
+      <dbConfig name="{{ registry_config_name }}">
+        <dataSource>{{ registry_jndi }}</dataSource>
+      </dbConfig>
+
+- name: Add remote instance and mount path for registry DB
+  blockinfile:
+    path: "{{ is_home }}repository/conf/registry.xml"
+    marker: "<!-- {mark} Registry DB Remote Instance and Mount Path -->"
+    insertafter: "</indexingConfiguration>"
+    block: |
+      <remoteInstance url="https://localhost:{{ is_port }}/registry">
+          <id>{{ registry_remote_instance_id }}</id>
+          <dbConfig>{{ registry_config_name }}</dbConfig>
+          <readOnly>false</readOnly>
+          <enableCache>true</enableCache>
+          <registryRoot>/</registryRoot>
+      </remoteInstance>
+
+      <mount path="/_system/governance" overwrite="true">
+          <instanceId>{{ registry_remote_instance_id }}</instanceId>
+          <targetPath>/_system/governance</targetPath>
+      </mount>
+      <mount path="/_system/config" overwrite="true">
+        <instanceId>{{ registry_remote_instance_id }}</instanceId>
+        <targetPath>/_system/config</targetPath>
+      </mount>
+
+- name: Use {{ userstore_jndi }} for User store
+  replace:
+    path: "{{ is_home }}repository/conf/user-mgt.xml"
+    regexp: '(\s+)<Property name=\"dataSource\">jdbc/WSO2CarbonDB<\/Property>'
+    replace: '\1<Property name="dataSource">{{ userstore_jndi }}</Property>'
+#    before: 'Start before line.*'
+    backup: yes
+
+- name: AM - Set default admin username
+  replace:
+    path: "{{ is_home }}repository/conf/user-mgt.xml"
+    regexp: '(\s+)<UserName>admin</UserName>'
+    replace: '\1<UserName>{{ admin_user }}</UserName>'
+
+- name: AM - Set default admin password
+  replace:
+    path: "{{ is_home }}repository/conf/user-mgt.xml"
+    regexp: '(\s+)<Password>admin</Password>'
+    replace: '\1<Password>{{ admin_pass }}</Password>'
+
+- name: Comment out UserStore config with ReadWriteLDAPUserStoreManager
+  replace:
+    path: "{{ is_home }}repository/conf/user-mgt.xml"
+    regexp: '(\s+)<UserStoreManager class=\"org\.wso2\.carbon\.user\.core\.ldap\.ReadWriteLDAPUserStoreManager\">([\w\W]*?)<\/UserStoreManager>'
+    replace: '\1<!--UserStoreManager class="org.wso2.carbon.user.core.ldap.ReadWriteLDAPUserStoreManager">\2</UserStoreManager-->'
+
+- name: Uncomment UserStore config with JDBCUserStoreManager
+  replace:
+    path: "{{ is_home }}repository/conf/user-mgt.xml"
+    regexp: '(\s+)(<\!\-\-)UserStoreManager class=\"org\.wso2\.carbon\.user\.core\.jdbc\.JDBCUserStoreManager\">([\w\W]*?)<\/UserStoreManager\-\->'
+    replace: '\1<UserStoreManager class="org.wso2.carbon.user.core.jdbc.JDBCUserStoreManager">\3</UserStoreManager>'

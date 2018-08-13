@@ -1,0 +1,5 @@
+- name: Extract WSO2 EI 
+  unarchive:
+    src: "{{ home_dir }}downloads/wso2ei-{{ ei_version }}.zip"
+    creates: "{{ home_dir }}products/wso2ei-{{ ei_version }}"
+    dest: "{{ home_dir }}products"

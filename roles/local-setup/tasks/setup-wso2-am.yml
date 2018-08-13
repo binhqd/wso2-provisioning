@@ -1,0 +1,5 @@
+- name: Extract WSO2 AM 
+  unarchive:
+    src: "{{ home_dir }}downloads/wso2am-{{ am_version }}.zip"
+    creates: "{{ home_dir }}products/wso2am-{{ am_version }}"
+    dest: "{{ home_dir }}products"

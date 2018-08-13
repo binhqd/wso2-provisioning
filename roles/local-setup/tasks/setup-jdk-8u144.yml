@@ -1,0 +1,4 @@
+- name: Download jdk-8u144
+  get_url:
+    url: "http://download.oracle.com/otn/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.tar.gz"
+    dest: "{{ home_dir }}jdk-8u144-linux-x64.tar.gz"

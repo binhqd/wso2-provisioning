@@ -1,0 +1,32 @@
+---
+#home_dir: "/var/www/lgsp/"
+admin_user: "quangnam-lgsp"
+admin_pass: "lgsp123456"
+
+userstore_dsname: "WSO2_UM_DB"
+userstore_jndi: "jdbc/WSO2UMDB"
+userstore_connection_string: "jdbc:mysql://localhost:3306/LGSP-userstore?characterEncoding=UTF-8&amp;useSSL=false"
+userstore_user: "root"
+userstore_pass: "123456"
+userstore_driver_class: "com.mysql.cj.jdbc.Driver"
+
+identity_dsname: "WSO2_IDENTITY_DB"
+identity_jndi: "jdbc/WSO2_IDENTITY_DB"
+identity_connection_string: "jdbc:mysql://localhost:3306/LGSP-identity?characterEncoding=UTF-8&amp;useSSL=false"
+identity_user: "root"
+identity_pass: "123456"
+identity_driver_class: "com.mysql.cj.jdbc.Driver"
+
+registry_dsname: "WSO2REG_DB"
+registry_jndi: "jdbc/WSO2REG_DB"
+registry_connection_string: "jdbc:mysql://localhost:3306/LGSP-registry?characterEncoding=UTF-8&amp;useSSL=false"
+registry_user: "root"
+registry_pass: "123456"
+registry_driver_class: "com.mysql.cj.jdbc.Driver"
+registry_config_name: "govregistry"
+registry_remote_instance_id: "gov"
+
+ei_port: 9443
+bps_port: 9445
+am_port: 9447
+is_port: 9448

@@ -1,0 +1,5 @@
+- name: Extract WSO2 IS 
+  unarchive:
+    src: "{{ home_dir }}downloads/wso2is-{{ is_version }}.zip"
+    creates: "{{ home_dir }}products/wso2is-{{ is_version }}"
+    dest: "{{ home_dir }}products"
