@@ -27,3 +27,9 @@
     src: "{{ home_dir }}downloads/mysql-connector-java-8.0.12.tar.gz"
     creates: "{{ home_dir }}downloads/mysql-connector"
     dest: "{{ home_dir }}downloads"
+
+- name: Download WSO2 AS
+  get_url:
+    url: "https://github.com/wso2/product-as/archive/v{{ as_version }}.zip"
+    dest: "{{ home_dir }}downloads/wso2as-{{as_version}}.zip"
+    checksum: md5:41342a614fa36e8faa991ce587889abe

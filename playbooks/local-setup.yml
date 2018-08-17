@@ -9,10 +9,12 @@
     ei_home: "/var/www/lgsp/products/wso2ei-6.3.0/"
     am_home: "/var/www/lgsp/products/wso2am-2.5.0/"
     is_home: "/var/www/lgsp/products/wso2is-5.6.0/"
+    as_home: "/var/www/lgsp/products/product-as-5.3.0/"
     # WSO2 Products
     ei_version: "6.3.0"
     am_version: "2.5.0"
     is_version: "5.6.0"
+    as_version: "5.3.0"
     # Java version
     java_version: "1.8.0_144"
     JAVA_HOME: "/home/binhqd/Downloads/jdk1.8.0_144/"
@@ -31,4 +33,5 @@
     EI_HOME: "{{ ei_home }}"
     AM_HOME: "{{ am_home }}"
     IS_HOME: "{{ is_home }}"
+    AM_HOME: "{{ am_home }}"
   handlers:

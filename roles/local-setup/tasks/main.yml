@@ -4,6 +4,7 @@
 - include: setup-wso2-is.yml
 - include: setup-wso2-ei.yml
 - include: setup-wso2-am.yml
+- include: setup-wso2-as.yml
 #- include: setup-jdk-8u144.yml
 #- name: Remove previous build
 #  file:
