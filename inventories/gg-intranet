@@ -1,0 +1,13 @@
+[webservers]
+192.168.1.200 ansible_user=lgsp ansible_connection=ssh
+
+[local]
+localhost
+
+[production:children]
+webservers
+local
+
+[development:children]
+webservers
+local
