@@ -3,3 +3,4 @@
 - include: configure-ei.yml
 - include: configure-am.yml
 - include: configure-is.yml
+- include: wso2-as-services.yml

@@ -1,5 +1,5 @@
 ---
-
+- include: create-dirs.yml
 - include: prepare-source.yml
 - include: setup-wso2-is.yml
 - include: setup-wso2-ei.yml

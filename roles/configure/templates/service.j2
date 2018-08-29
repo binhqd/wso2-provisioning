@@ -1,0 +1,25 @@
+#! /bin/sh
+export JAVA_HOME="{{ JAVA_HOME }}"
+ 
+startcmd='{{ item.script }} {{ item.portOffset }}start > /dev/null &'
+restartcmd='{{ item.script }} restart > /dev/null &'
+stopcmd='{{ item.script }} stop > /dev/null &'
+USER=root
+
+case "$1" in
+start)
+   echo "Starting {{ item.name }} ..."
+   su -c "${startcmd}" $USER
+;;
+restart)
+   echo "Re-starting {{ item.name }} ..."
+   su -c "${restartcmd}" $USER
+;;
+stop)
+   echo "Stopping {{ item.name }} ..."
+   su -c "${stopcmd}" $USER
+;;
+*)
+   echo "Usage: $0 {start|stop|restart}"
+exit 1
+esac

@@ -1,0 +1,8 @@
+- name: Creates directory for storing downloads
+  file: path="{{downloads_dir}}" state=directory
+
+- name: Creates directory for storing products
+  file: path="{{products_dir}}" state=directory
+
+- name: Creates directory for storing services scripts
+  file: path="{{services_dir}}" state=directory
